@@ -8,16 +8,6 @@ import type { z } from 'zod';
 import type { ZodTypeAny } from 'zod';
 
 // @public
-export function Env<T extends Record<string, ZodTypeAny>>(spec: T, target?: Record<string, string>): InferProps<T>;
-
-// @public
-export type Env<T extends Record<string, any>> = T;
-
-// @public
-export type InferProps<T extends Record<string, ZodTypeAny>> = {
-    [K in keyof T]: T[K] extends ZodTypeAny ? z.infer<T[K]> : never;
-};
-
-// (No @packageDocumentation comment for this package)
+export function Env<T extends ZodTypeAny>(spec: T, source?: object): z.infer<T>;
 
 ```
