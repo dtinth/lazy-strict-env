@@ -19,14 +19,34 @@ import type { ZodTypeAny, z } from 'zod'
 export function Env<T extends ZodTypeAny>(
   spec: T,
   source: object = process.env,
-): z.infer<T> {
+): z.infer<T> & { valid: boolean; error?: Error } {
   let result: { value: z.infer<T> } | undefined
+  const getResult = () => {
+    if (!result) {
+      result = { value: spec.parse(source) }
+    }
+    return result.value
+  }
   return new Proxy(source, {
     get(_target, prop) {
-      if (!result) {
-        result = { value: spec.parse(source) }
+      switch (prop) {
+        case 'valid':
+          try {
+            getResult()
+            return true
+          } catch {
+            return false
+          }
+        case 'error':
+          try {
+            getResult()
+            return undefined
+          } catch (error) {
+            return error
+          }
+        default:
+          return getResult()[prop as keyof z.infer<T>]
       }
-      return result.value[prop as keyof z.infer<T>]
     },
-  })
+  }) as any
 }
