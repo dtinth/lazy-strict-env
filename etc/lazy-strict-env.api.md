@@ -8,6 +8,9 @@ import type { z } from 'zod';
 import type { ZodTypeAny } from 'zod';
 
 // @public
-export function Env<T extends ZodTypeAny>(spec: T, source?: object): z.infer<T>;
+export function Env<T extends ZodTypeAny>(spec: T, source?: object): z.infer<T> & {
+    valid: boolean;
+    error?: Error;
+};
 
 ```
