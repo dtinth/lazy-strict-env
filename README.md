@@ -6,7 +6,7 @@ Validation is done the first time an environment variable is accessed, so enviro
 ## Synopsis
 
 ```ts
-import Env from 'lazy-strict-env'
+import { Env } from 'lazy-strict-env'
 import { z } from 'zod'
 
 // No errors thrown here if PORT or DATABASE_URL is not set.
