@@ -12,6 +12,7 @@ import type { ZodTypeAny } from 'zod';
 export function Env<T extends ZodTypeAny>(spec: T, source?: object): z.infer<T> & {
     valid: boolean;
     error?: Error;
+    validate: () => z.infer<T>;
 };
 
 // @public (undocumented)
