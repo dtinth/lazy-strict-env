@@ -21,9 +21,10 @@ const env = Env(
 // an error is thrown if PORT or DATABASE_URL is not specified.
 env.PORT
 
-// Two more APIs are available:
+// Three more APIs are available:
 env.valid // true if env conforms to schema
 env.error // zod error object if env does not conform to schema
+env.validate() // performs validation immediately (make it eager)
 
 // One way to use it is to separate the schema into multiple slices.
 const config = {

@@ -5,6 +5,7 @@
 ```ts
 
 import type { z } from 'zod';
+import type { ZodError } from 'zod';
 import type { ZodTypeAny } from 'zod';
 
 // @public
@@ -12,5 +13,15 @@ export function Env<T extends ZodTypeAny>(spec: T, source?: object): z.infer<T> 
     valid: boolean;
     error?: Error;
 };
+
+// @public (undocumented)
+export class EnvError extends Error {
+    constructor(cause: ZodError);
+}
+
+// Warning: (ae-internal-missing-underscore) The name "formatZodError" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export function formatZodError(error: ZodError): string;
 
 ```

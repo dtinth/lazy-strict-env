@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { Env } from '.'
+import { Env, EnvError } from '.'
 
 it('does not throw errors immediately', () => {
   const target = {}
@@ -45,6 +45,20 @@ describe('.error', () => {
   it('is the error object when env does not match schema', () => {
     const target = {}
     const env = Env(z.object({ X: z.string() }), target)
-    expect(env.error).toBeInstanceOf(Error)
+    expect(env.error).toBeInstanceOf(EnvError)
+    expect(String(env.error)).toContain('X: Required (invalid_type)')
+  })
+})
+
+describe('.validate', () => {
+  it('returns value when env matches schema', () => {
+    const target = { X: 'meow' }
+    const env = Env(z.object({ X: z.string() }), target)
+    expect(env.validate()).toEqual({ X: 'meow' })
+  })
+  it('throws an error when env does not match schema', () => {
+    const target = {}
+    const env = Env(z.object({ X: z.string() }), target)
+    expect(() => env.validate()).toThrow()
   })
 })
