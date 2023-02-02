@@ -26,7 +26,16 @@ env.valid // true if env conforms to schema
 env.error // zod error object if env does not conform to schema
 env.validate() // performs validation immediately (make it eager)
 
+// When an error is thrown or returned from `.error`,
+// the error object will be an instance of `EnvError`,
+// and its message will look like this:
+//
+//     EnvError: env.PORT: Expected number, received nan (invalid_type), env.DATABASE_URL: Required (invalid_type)
+
 // One way to use it is to separate the schema into multiple slices.
+// It allows different slices to be validated separately at different times.
+// This can be useful for e.g. CLI scripts where operations that require
+// certain environment variables can be validated separately.
 const config = {
   aws: Env(
     z.object({
